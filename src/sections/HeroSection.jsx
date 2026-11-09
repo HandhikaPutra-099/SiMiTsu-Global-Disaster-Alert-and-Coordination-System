@@ -83,11 +83,6 @@ export default function HeroSection() {
           Platform edukasi dan simulasi berbasis data.
         </p>
 
-        {/* Extended educational context */}
-        <p className="mt-2 text-sm sm:text-base text-[#64748b] max-w-xl mx-auto">
-          Pahami dinamika gelombang, pelajari mekanisme patahan lempeng, dan kuasai langkah evakuasi mandiri untuk keselamatan jiwa.
-        </p>
-
         {/* CTAs */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <a

@@ -108,7 +108,7 @@ export const riskZones = [
 ];
 
 export const riskZonesDisclaimer =
-  "*Catatan Penting: Klasifikasi zona risiko di atas disajikan sebagai panduan edukasi umum. Penetapan zona bahaya, batas elevasi, serta radius aman yang pasti dan mengikat wajib mengacu pada peta bahaya tsunami resmi yang diterbitkan oleh BPBD setempat.";
+  "Klasifikasi zona risiko di atas disajikan sebagai panduan edukasi umum. Penetapan zona bahaya, batas elevasi, serta radius aman yang pasti dan mengikat wajib mengacu pada peta bahaya tsunami resmi yang diterbitkan oleh BPBD setempat.";
 
 export const evacuationSteps = [
   {
@@ -147,18 +147,3 @@ export const evacuationSteps = [
     desc: "Kembali ke permukiman hanya setelah diizinkan oleh pihak berwenang. Waspadai struktur bangunan yang rapuh, kabel listrik roboh, dan air bersih yang terkontaminasi."
   }
 ];
-
-export const goBagItems = [
-  "Air mineral (minimal 3 liter per orang)",
-  "Makanan darurat siap santap / biskuit padat kalori",
-  "Kotak Pertolongan Pertama (P3K)",
-  "Senter bertenaga baterai / tenaga putar + baterai cadangan",
-  "Dokumen penting (KTP, KK, polis, ijazah) dalam kantong plastik kedap air",
-  "Uang tunai secukupnya dalam pecahan kecil",
-  "Peluit darurat untuk menarik perhatian tim penyelamat",
-  "Selimut termal (foil emergency blanket) atau pakaian cadangan",
-  "Obat-obatan rutin pribadi bagi anggota keluarga yang membutuhkan",
-  "Radio portabel (AM/FM) untuk memantau siaran informasi darurat",
-  "Masker penutup hidung dan perlengkapan sanitasi pribadi"
-];
-

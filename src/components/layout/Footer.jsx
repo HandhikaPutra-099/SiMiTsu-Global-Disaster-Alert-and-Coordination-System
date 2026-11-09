@@ -1,13 +1,13 @@
-import { ShieldAlert, PhoneCall, Radio } from 'lucide-react'
+import { PhoneCall, Radio } from 'lucide-react'
 
 export default function Footer() {
   return (
     <footer className="border-t border-[#1e293b] bg-[#080c16] text-[#94a3b8] text-sm">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
-          {/* Brand & Purpose */}
-          <div className="md:col-span-2 space-y-3">
-            <div className="flex items-center gap-2">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 items-start">
+          {/* Brand */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-[#111827] border border-[#1e293b] flex items-center justify-center">
                 <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
                   <path d="M2 20 Q7 10 14 16 Q21 22 26 10" stroke="#0ea5e9" strokeWidth="2.5" strokeLinecap="round" fill="none" />
@@ -19,13 +19,9 @@ export default function Footer() {
                 SiMi<span className="text-[#0ea5e9]">Tsu</span>
               </span>
             </div>
-            <p className="text-sm text-[#94a3b8] max-w-md leading-relaxed">
-              Sistem Mitigasi Tsunami Indonesia. Platform edukasi dan simulasi berbasis data ilmiah untuk meningkatkan kesiapsiagaan masyarakat pesisir terhadap ancaman tsunami di Nusantara.
+            <p className="text-xs text-[#64748b]">
+              Sistem Mitigasi Tsunami Indonesia
             </p>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111827] border border-[#1e293b] text-xs text-[#cbd5e1]">
-              <ShieldAlert className="w-4 h-4 text-[#f59e0b]" />
-              <span>Bukan peringatan dini real-time BMKG / BNPB</span>
-            </div>
           </div>
 
           {/* Emergency Contacts */}
@@ -74,9 +70,6 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-[#1e293b] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#64748b]">
           <p>© {new Date().getFullYear()} SiMiTsu — Edukasi & Mitigasi Bencana Pesisir Indonesia.</p>
-          <p className="text-[11px]">
-            Data dan simulasi disajikan untuk tujuan literasi dan simulasi konseptual.
-          </p>
         </div>
       </div>
     </footer>
