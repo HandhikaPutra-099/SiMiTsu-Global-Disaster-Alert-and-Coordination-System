@@ -1,93 +1,26 @@
-import { useState, useEffect, useRef } from 'react'
-import { RotateCcw, ChevronDown, ChevronUp, Sparkles, AlertCircle, Info, X } from 'lucide-react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { RotateCcw, Sparkles } from 'lucide-react'
+import CauseDetailModal from '../components/CauseDetailModal'
+import { causesData } from '../data/causesData'
 
 export default function CausesSection() {
   const [activeModal, setActiveModal] = useState(null)
-  const [expandedCards, setExpandedCards] = useState({ 0: false, 1: false, 2: false, 3: false })
 
   const canvasRefs = useRef([])
   const animTimes = useRef([0, 0, 0, 0])
   const animFrames = useRef([null, null, null, null])
-
-  const causesData = [
-    {
-      id: 0,
-      title: 'Gempa Subduksi (Megathrust)',
-      tag: 'Tektonik',
-      accentColor: '#0ea5e9',
-      borderColor: 'border-[#0ea5e9]/40',
-      badgeColor: 'bg-[#0ea5e9]/10 text-[#38bdf8] border-[#0ea5e9]/30',
-      shortDesc:
-        'Lempeng samudra menunjam ke bawah lempeng benua. Terjadinya pelepasan energi akumulatif secara mendadak mengangkat dasar laut hingga beberapa meter, menggerakkan seluruh kolom air.',
-      details: [
-        'Lempeng tektonik bergerak perlahan (3–7 cm per tahun), mengunci regangan di zona megathrust selama ratusan tahun.',
-        'Patahan elastis tiba-tiba (elastic rebound) mendisplesi kolom air secara vertikal dalam hitungan detik.',
-        'Gelombang tsunami merambat ke segala arah dengan panjang gelombang mencapai lebih dari 100–200 kilometer.',
-        'Contoh peristiwa nyata: Tsunami Aceh 2004 (M9.1), Tsunami Nias 2005 (M8.6), Tsunami Mentawai 2010 (M7.8).',
-      ],
-      caution: 'Merupakan pemicu lebih dari 85% kejadian tsunami di kawasan Samudera Hindia dan busur Sunda.',
-    },
-    {
-      id: 1,
-      title: 'Erupsi Vulkanik',
-      tag: 'Vulkanik',
-      accentColor: '#f97316',
-      borderColor: 'border-[#f97316]/40',
-      badgeColor: 'bg-[#f97316]/10 text-[#fb923c] border-[#f97316]/30',
-      shortDesc:
-        'Letusan gunung api bawah laut yang eksplosif atau keruntuhan sisi tubuh gunung (flank collapse) langsung ke laut memindahkan volume air secara masif.',
-      details: [
-        'Terjadi akibat ledakan piroklastik bawah air atau kolaps kaldera (runtuhnya kawah gunung berapi).',
-        'Seringkali terjadi tanpa didahului gempa daratan berdurasi panjang, sehingga waktu evakuasi mandiri sangat singkat.',
-        'Massa material vulkanik yang masuk ke air membentuk gelombang kejut radial berkekuatan destruktif tinggi.',
-        'Contoh peristiwa bersejarah: Letusan Krakatau 1883 (ketinggian gelombang 40 m) dan Kolaps Anak Krakatau 2018 di Selat Sunda.',
-      ],
-      caution: 'Tsunami vulkanik dapat terjadi tanpa sinyal gempa bumi terdeteksi oleh sistem seismik konvensional.',
-    },
-    {
-      id: 2,
-      title: 'Longsor Bawah Laut',
-      tag: 'Geomorfologi',
-      accentColor: '#8b5cf6',
-      borderColor: 'border-[#8b5cf6]/40',
-      badgeColor: 'bg-[#8b5cf6]/10 text-[#a78bfa] border-[#8b5cf6]/30',
-      shortDesc:
-        'Longsoran sedimen atau tebing lereng bawah laut (submarine landslide) meluncur dengan kecepatan tinggi menuruni palung, memindahkan massa air secara instan.',
-      details: [
-        'Sering kali dipicu oleh gempa tektonik lokal berkekuatan sedang atau sedimentasi jenuh di tepi paparan benua.',
-        'Perpindahan sedimen jutaan ton memicu pembentukan gelombang lokal dengan amplitudo sangat tinggi.',
-        'Radius jangkauan umumnya terlokalisasi di sekitar teluk/palung, namun kedatangan gelombang hanya beberapa menit setelah pemicu.',
-        'Contoh peristiwa: Teluk Palu 2018 (kombinasi sesar mendatar, likuefaksi pantai, dan longsor dasar laut), Papua Nugini 1998.',
-      ],
-      caution: 'Dapat menghasilkan gelombang ekstrem lokal dalam hitungan 2–5 menit pasca guncangan awal.',
-    },
-    {
-      id: 3,
-      title: 'Tumbukan Objek Luar Angkasa',
-      tag: 'Teoretis / Langka',
-      accentColor: '#ef4444',
-      borderColor: 'border-[#ef4444]/40',
-      badgeColor: 'bg-[#ef4444]/10 text-[#f87171] border-[#ef4444]/30',
-      shortDesc:
-        'Jatuhnya meteorit atau asteroid besar langsung ke badan samudra. Merupakan mekanisme teoretis berskala kosmologis dengan energi kinetik luar biasa.',
-      details: [
-        'Kinetik tumbukan benda antariksa dengan kecepatan puluhan kilometer per detik menguapkan air laut dan membentuk kawah tumbukan transien.',
-        'Runtuhnya rongga air dan ekspansi gelombang kejut menimbulkan gelombang megatsunami melingkar.',
-        'Sangat langka dalam skala waktu geologi modern dan TIDAK tercatat dalam riwayat rekaman sejarah modern Indonesia.',
-        'Dikaji dalam pemodelan ilmiah oseanografi dan astrofisika global untuk studi pertahanan planet bumi.',
-      ],
-      caution: 'Peristiwa hipotesis/teoretis; tidak ada rekaman instrumen modern tsunami Indonesia dari penyebab ini.',
-    },
-  ]
 
   // Animation triggers & canvas rendering
   const replayCause = (idx) => {
     animTimes.current[idx] = 0
   }
 
-  const toggleDetails = (idx) => {
-    setExpandedCards((prev) => ({ ...prev, [idx]: !prev[idx] }))
+  const openCauseDetail = (cause, trigger) => {
+    triggerRef.current = trigger
+    setActiveModal(cause)
   }
+  const triggerRef = useRef(null)
+  const closeModal = useCallback(() => setActiveModal(null), [])
 
   useEffect(() => {
     // 0: Gempa Subduksi
@@ -536,7 +469,6 @@ export default function CausesSection() {
       {/* 4 Causes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {causesData.map((item) => {
-          const isExpanded = expandedCards[item.id]
           return (
             <div
               key={item.id}
@@ -553,11 +485,12 @@ export default function CausesSection() {
                   className="w-full h-full object-cover"
                 />
                 <button
+                  type="button"
                   onClick={() => replayCause(item.id)}
-                  className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0a0e1a]/85 hover:bg-[#0a0e1a] text-white border border-[#1e293b] text-xs font-medium transition-colors shadow-lg hover:border-[#0ea5e9]"
+                  className="absolute bottom-3 right-3 inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-[#1e293b] bg-[#0a0e1a]/90 px-3 text-xs font-medium text-white shadow-lg transition-colors hover:border-[#0ea5e9] hover:bg-[#0a0e1a] active:bg-[#111827] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#38bdf8]"
                   aria-label={`Putar ulang animasi ${item.title}`}
                 >
-                  <RotateCcw className="w-3 h-3 text-[#0ea5e9]" />
+                  <RotateCcw className="h-4 w-4 text-[#38bdf8]" aria-hidden="true" />
                   <span>Putar Ulang</span>
                 </button>
               </div>
@@ -581,42 +514,15 @@ export default function CausesSection() {
                   </p>
                 </div>
 
-                {/* Card Controls & Details Drawer */}
+                {/* Card Controls */}
                 <div className="mt-5 pt-4 border-t border-[#1e293b]">
-                  <div className="flex items-center justify-between">
-                    <button
-                      onClick={() => toggleDetails(item.id)}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0ea5e9] hover:text-[#38bdf8] transition-colors focus:outline-none"
-                    >
-                      <span>{isExpanded ? 'Tutup Penjelasan' : 'Detail Penyebab'}</span>
-                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </button>
-
-                    <button
-                      onClick={() => setActiveModal(item)}
-                      className="text-xs text-[#64748b] hover:text-white transition-colors"
-                    >
-                      Buka Modal
-                    </button>
-                  </div>
-
-                  {/* Expandable Section */}
-                  {isExpanded && (
-                    <div className="mt-4 pt-3 border-t border-[#1e293b]/60 text-xs space-y-2 text-[#cbd5e1] animate-in fade-in duration-200">
-                      <p className="font-semibold text-white mb-1">Mekanisme Pembentukan:</p>
-                      <ul className="space-y-1.5 list-disc list-inside text-[#94a3b8]">
-                        {item.details.map((point, pIdx) => (
-                          <li key={pIdx} className="leading-relaxed">
-                            {point}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="mt-2 p-2 rounded-lg bg-[#0a0e1a] border border-[#1e293b] text-[#f59e0b] flex items-start gap-1.5 text-[11px]">
-                        <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-                        <span>{item.caution}</span>
-                      </div>
-                    </div>
-                  )}
+                  <button
+                    type="button"
+                    onClick={(event) => openCauseDetail(item, event.currentTarget)}
+                    className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#0ea5e9]/50 bg-[#0ea5e9]/10 px-4 text-sm font-semibold text-[#7dd3fc] transition-colors hover:border-[#38bdf8] hover:bg-[#0ea5e9]/20 active:bg-[#0ea5e9]/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#38bdf8]"
+                  >
+                    Detail Penyebab
+                  </button>
                 </div>
               </div>
             </div>
@@ -624,112 +530,12 @@ export default function CausesSection() {
         })}
       </div>
 
-      {/* Physics Cards (Wave Physics Section) */}
-      <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-[#111827] border border-[#1e293b] shadow-xl">
-        <div className="flex items-center gap-2 mb-2">
-          <Info className="w-5 h-5 text-[#0ea5e9]" />
-          <h3 className="text-xl font-bold text-white">
-            Fisika Perambatan Gelombang Tsunami
-          </h3>
-        </div>
-        <p className="text-xs sm:text-sm text-[#94a3b8] mb-6">
-          Karakteristik fisik perambatan gelombang sangat bergantung pada kedalaman batimetri laut dan geometri pesisir. Angka bersifat aproksimatif dan kontekstual.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {/* Card 1: Laut Dalam */}
-          <div className="p-5 rounded-xl bg-[#1a2234] border border-[#1e293b]">
-            <span className="text-xs font-semibold text-[#0ea5e9] uppercase tracking-wider block mb-1">
-              Di Laut Dalam
-            </span>
-            <div className="text-3xl font-extrabold text-white font-mono tracking-tight my-1">
-              ~800 <span className="text-base font-normal text-[#94a3b8]">km/jam</span>
-            </div>
-            <p className="text-xs text-[#94a3b8] mt-2 leading-relaxed">
-              Kecepatan setara pesawat jet komersial (<span className="font-mono text-[#cbd5e1]">v = √(g × d)</span>). Ketinggian gelombang di laut dalam kurang dari 1 meter sehingga tidak dirasakan oleh kapal di tengah samudra.
-            </p>
-          </div>
-
-          {/* Card 2: Mendekati Pantai */}
-          <div className="p-5 rounded-xl bg-[#1a2234] border border-[#1e293b]">
-            <span className="text-xs font-semibold text-[#f59e0b] uppercase tracking-wider block mb-1">
-              Mendekati Pantai
-            </span>
-            <div className="text-3xl font-extrabold text-[#f59e0b] font-mono tracking-tight my-1">
-              50–80 <span className="text-base font-normal text-[#94a3b8]">km/jam</span>
-            </div>
-            <p className="text-xs text-[#94a3b8] mt-2 leading-relaxed">
-              Mengalami fenomena pendangkalan (<em>shoaling</em>). Gesekan dengan dasar laut memperlambat gelombang, namun energi terkompresi hingga ketinggian gelombang membubung tinggi.
-            </p>
-          </div>
-
-          {/* Card 3: Amplifikasi Teluk */}
-          <div className="p-5 rounded-xl bg-[#1a2234] border border-[#1e293b]">
-            <span className="text-xs font-semibold text-[#ef4444] uppercase tracking-wider block mb-1">
-              Amplifikasi Teluk
-            </span>
-            <div className="text-3xl font-extrabold text-[#ef4444] font-mono tracking-tight my-1">
-              1.5–3× <span className="text-base font-normal text-[#94a3b8]">lipat</span>
-            </div>
-            <p className="text-xs text-[#94a3b8] mt-2 leading-relaxed">
-              Geometri teluk sempit dan muara sungai memfokuskan energi hidrodinamis, melipatgandakan tinggi rayapan air (<em>run-up</em>) jauh lebih tinggi dibanding garis pantai terbuka.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Accessible Detail Modal */}
       {activeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative w-full max-w-lg bg-[#111827] border border-[#1e293b] rounded-2xl p-6 shadow-2xl">
-            <button
-              onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 p-1.5 text-[#94a3b8] hover:text-white rounded-lg hover:bg-[#1a2234]"
-              aria-label="Tutup modal detail"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <span className={`inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full border mb-3 ${activeModal.badgeColor}`}>
-              {activeModal.tag}
-            </span>
-
-            <h3 className="text-xl font-bold text-white mb-2">
-              {activeModal.title}
-            </h3>
-
-            <p className="text-sm text-[#cbd5e1] mb-4 leading-relaxed">
-              {activeModal.shortDesc}
-            </p>
-
-            <div className="space-y-2 mb-4">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-[#64748b]">
-                Poin Edukasi Utama:
-              </h4>
-              <ul className="space-y-2 text-xs text-[#94a3b8] list-disc list-inside">
-                {activeModal.details.map((pt, i) => (
-                  <li key={i} className="leading-relaxed">
-                    {pt}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="p-3 rounded-xl bg-[#0a0e1a] border border-[#1e293b] text-xs text-[#f59e0b] flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{activeModal.caution}</span>
-            </div>
-
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={() => setActiveModal(null)}
-                className="px-4 py-2 rounded-xl bg-[#1e293b] hover:bg-[#28354b] text-white text-xs font-semibold transition-colors"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
-        </div>
+        <CauseDetailModal
+          cause={activeModal}
+          onClose={closeModal}
+          triggerRef={triggerRef}
+        />
       )}
     </section>
   )
